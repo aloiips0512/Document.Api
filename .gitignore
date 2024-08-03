@@ -13,6 +13,7 @@ bld/
 
 # VS Code directory
 .vscode/
+.vs/
 
 # User-specific files
 *.rsuser

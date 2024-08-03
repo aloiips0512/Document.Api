@@ -1,9 +1,26 @@
 ﻿<Properties StartupConfiguration="{D0D75864-1FD7-4B9C-9CDC-1799A83A88E7}|https">
-  <MonoDevelop.Ide.ItemProperties.src.Document.Repository FirstBuild="True" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.ItemProperties.src.Document.Api PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MonoDevelop.Ide.ItemProperties.src.Document.Mappings FirstBuild="True" />
-  <MonoDevelop.Ide.ItemProperties.src.Document.Models FirstBuild="True" />
-  <MonoDevelop.Ide.ItemProperties.src.Document.Services.Interfaces FirstBuild="True" />
-  <MonoDevelop.Ide.ItemProperties.src.Document.Services FirstBuild="True" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workbench>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Document.Api">
+            <Node name="src">
+              <Node name="Document.Mappings" expanded="True">
+                <Node name="DefaultProfile.cs" selected="True" />
+              </Node>
+              <Node name="Document.Repository" expanded="True" />
+              <Node name="Document.Services.Interfaces" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
   <MultiItemStartupConfigurations />
 </Properties>
