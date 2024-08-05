@@ -1,14 +1,15 @@
 ﻿using System;
 using AutoMapper;
 using Document.Models;
-using Document.Models.DTO;
 using MongoDB.Driver.Linq;
 using Document.Repository;
 using Document.Services.Interfaces;
 using MongoDB.Bson.IO;
 using MongoDB.Driver;
 using Newtonsoft.Json;
-using MongoDB.Driver.Linq;
+using System.Text;
+using System.Text.Json;
+using ThirdParty.Json.LitJson;
 
 namespace Document.Services
 {
@@ -23,12 +24,12 @@ namespace Document.Services
             _mapper = mapper;
         }
 
-        public Task<string> AnonymizeDocument(string documentJson, string productCode)
+        public Task<Response<string>> AnonymizeDocument(string documentJson, string productCode)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Response<string>> GetDocumentAsync(Guid tenantId, Guid documentId)
+        public Task<Response<string>> GetDocumentAsync(Guid tenantId, Guid documentId, string productCode)
         {
             throw new NotImplementedException();
         }

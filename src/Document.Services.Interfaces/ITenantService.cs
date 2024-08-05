@@ -5,7 +5,7 @@ namespace Document.Services.Interfaces
 {
     public interface ITenantService
     {
-        Task<Response<bool>> IsTenantWhitelistedAsync(Guid tenantId);
+        Response<bool> IsTenantWhitelistedAsync(Guid tenantId);
     }
 }
 

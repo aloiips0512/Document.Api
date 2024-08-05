@@ -4,11 +4,11 @@ namespace Document.Models
 {
 	public class Client
 	{
-        [BsonId]
-        public ObjectId Id { get; set; }
-        public Guid TenantId { get; set; }
-        public Guid ClientId { get; set; }
+        public Guid Id { get; set; }
+        public string ClientId { get; set; }
         public string ClientVAT { get; set; }
+        public string TenantId { get; set; }
+        public string DocumentId { get; set; }  // added for the repository method
     }
 }
 

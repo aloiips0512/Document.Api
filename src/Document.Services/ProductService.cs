@@ -7,16 +7,17 @@ namespace Document.Services
 {
     public class ProductService : IProductService
     {
-        private readonly AppDbContext _context;
-
-        public ProductService(AppDbContext context)
+        private readonly List<string> _supportedProducts = new List<string>
         {
-            _context = context;
-        }
-
-        public Task<Response<bool>> IsProductSupported(int productId)
+            "ProductA",
+            "ProductB"
+        };
+        public Response<bool> IsProductSupported(string productId)
         {
-            throw new NotImplementedException();
+            bool isSupported = _supportedProducts.Contains(productId);
+            return isSupported
+                ? Response<bool>.CreateSuccessResponse(true)
+                : Response<bool>.CreateErrorResponse("Product code is not supported.");
         }
     }
 }

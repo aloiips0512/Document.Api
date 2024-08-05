@@ -1,0 +1,15 @@
+/Users/aloiips/Projects/Document.Api/src/Document.Repository.Interfaces/bin/Debug/net7.0/Document.Repository.Interfaces.deps.json
+/Users/aloiips/Projects/Document.Api/src/Document.Repository.Interfaces/bin/Debug/net7.0/Document.Repository.Interfaces.dll
+/Users/aloiips/Projects/Document.Api/src/Document.Repository.Interfaces/bin/Debug/net7.0/Document.Repository.Interfaces.pdb
+/Users/aloiips/Projects/Document.Api/src/Document.Repository.Interfaces/bin/Debug/net7.0/Document.Models.dll
+/Users/aloiips/Projects/Document.Api/src/Document.Repository.Interfaces/bin/Debug/net7.0/Document.Models.pdb
+/Users/aloiips/Projects/Document.Api/src/Document.Repository.Interfaces/obj/Debug/net7.0/Document.Repository.Interfaces.csproj.AssemblyReference.cache
+/Users/aloiips/Projects/Document.Api/src/Document.Repository.Interfaces/obj/Debug/net7.0/Document.Repository.Interfaces.GeneratedMSBuildEditorConfig.editorconfig
+/Users/aloiips/Projects/Document.Api/src/Document.Repository.Interfaces/obj/Debug/net7.0/Document.Repository.Interfaces.AssemblyInfoInputs.cache
+/Users/aloiips/Projects/Document.Api/src/Document.Repository.Interfaces/obj/Debug/net7.0/Document.Repository.Interfaces.AssemblyInfo.cs
+/Users/aloiips/Projects/Document.Api/src/Document.Repository.Interfaces/obj/Debug/net7.0/Document.Repository.Interfaces.csproj.CoreCompileInputs.cache
+/Users/aloiips/Projects/Document.Api/src/Document.Repository.Interfaces/obj/Debug/net7.0/Document.Repository.Interfaces.csproj.CopyComplete
+/Users/aloiips/Projects/Document.Api/src/Document.Repository.Interfaces/obj/Debug/net7.0/Document.Repository.Interfaces.dll
+/Users/aloiips/Projects/Document.Api/src/Document.Repository.Interfaces/obj/Debug/net7.0/refint/Document.Repository.Interfaces.dll
+/Users/aloiips/Projects/Document.Api/src/Document.Repository.Interfaces/obj/Debug/net7.0/Document.Repository.Interfaces.pdb
+/Users/aloiips/Projects/Document.Api/src/Document.Repository.Interfaces/obj/Debug/net7.0/ref/Document.Repository.Interfaces.dll

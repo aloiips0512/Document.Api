@@ -8,16 +8,19 @@ namespace Document.Services
 {
     public class TenantService : ITenantService
     {
-        private readonly AppDbContext _context;
-
-        public TenantService(AppDbContext context)
+        private readonly List<Guid> _whitelistedTenants = new List<Guid>
         {
-            _context = context;
-        }
+            Guid.Parse("11111111-1111-1111-1111-111111111111"), // Example tenant IDs
+            Guid.Parse("22222222-2222-2222-2222-222222222222")
+        };
+    
 
-        public Task<Response<bool>> IsTenantWhitelistedAsync(Guid tenantId)
+        public Response<bool> IsTenantWhitelistedAsync(Guid tenantId)
         {
-            throw new NotImplementedException();
+            bool isWhitelisted = _whitelistedTenants.Contains(tenantId);
+            return isWhitelisted
+                ? Response<bool>.CreateSuccessResponse(true)
+                : Response<bool>.CreateErrorResponse("Tenant ID is not whitelisted.");
         }
     }
 }

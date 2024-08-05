@@ -1,8 +1,10 @@
 using AutoMapper;
+using Document.Models.Settings;
 using Document.Repository;
 using Document.Services;
 using Document.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using Serilog;
 
@@ -13,12 +15,22 @@ Log.Logger = new LoggerConfiguration()
     .CreateLogger();
 //builder.Host.UseSerilog();
 
-// Configure MongoDB
-builder.Services.AddSingleton<IMongoClient, MongoClient>(sp =>
+builder.Services.Configure<MongoDbSettings>(
+    builder.Configuration.GetSection(nameof(MongoDbSettings)));
+
+builder.Services.AddSingleton<IMongoClient>(sp =>
 {
-    var settings = MongoClientSettings.FromConnectionString(builder.Configuration.GetConnectionString("MongoDb"));
-    return new MongoClient(settings);
+    var settings = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
+    return new MongoClient(settings.ConnectionString);
 });
+
+builder.Services.AddScoped(sp =>
+{
+    var settings = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
+    var client = sp.GetRequiredService<IMongoClient>();
+    return client.GetDatabase(settings.DatabaseName);
+});
+
 
 builder.Services.AddSingleton<AppDbContext>();
 builder.Services.AddTransient<IClientService, ClientService>();

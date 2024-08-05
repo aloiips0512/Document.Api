@@ -4,6 +4,6 @@ namespace Document.Services.Interfaces;
 
 public interface IProductService
 {
-    Task<Response<bool>> IsProductSupported(int productId);
+    Response<bool> IsProductSupported(string productId);
 }
 
