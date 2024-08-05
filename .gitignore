@@ -11,6 +11,8 @@ bld/
 [Bb]in/
 [Oo]bj/
 
+src/Document.Api/Logs
+.DS_Store/
 # VS Code directory
 .vscode/
 .vs/

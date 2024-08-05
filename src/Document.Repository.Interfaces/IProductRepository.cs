@@ -3,10 +3,10 @@ using Document.Models;
 
 namespace Document.Repository.Interfaces
 {
-	public interface IProductRepository
-	{
+    public interface IProductRepository
+    {
         Task<bool> IsProductSupportedAsync(string productCode);
-        Task CreateProductAsync(Product product);
+        Task<Product> GetProductByCodeAsync(string productCode);
     }
 }
 

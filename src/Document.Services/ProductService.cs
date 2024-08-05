@@ -1,23 +1,32 @@
 ﻿using System;
 using Document.Models;
 using Document.Repository;
+using Document.Repository.Interfaces;
 using Document.Services.Interfaces;
+using MongoDB.Driver;
 
 namespace Document.Services
 {
     public class ProductService : IProductService
     {
-        private readonly List<string> _supportedProducts = new List<string>
+        private readonly IProductRepository _productRepository;
+
+        public ProductService(IProductRepository productRepository)
         {
-            "ProductA",
-            "ProductB"
-        };
-        public Response<bool> IsProductSupported(string productId)
+            _productRepository = productRepository;
+        }
+
+        public async Task<Response<bool>> IsProductSupported(string productCode)
         {
-            bool isSupported = _supportedProducts.Contains(productId);
-            return isSupported
-                ? Response<bool>.CreateSuccessResponse(true)
-                : Response<bool>.CreateErrorResponse("Product code is not supported.");
+            try
+            {
+                var isSupported = await _productRepository.IsProductSupportedAsync(productCode);
+                return Response<bool>.CreateSuccessResponse(isSupported);
+            }
+            catch (Exception ex)
+            {
+                return Response<bool>.CreateErrorResponse($"An error occurred: {ex.Message}");
+            }
         }
     }
 }

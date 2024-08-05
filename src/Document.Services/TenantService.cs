@@ -1,26 +1,39 @@
 ﻿using System;
 using Document.Models;
 using Document.Repository;
+using Document.Repository.Interfaces;
 using Document.Services.Interfaces;
+using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 
 namespace Document.Services
 {
     public class TenantService : ITenantService
     {
-        private readonly List<Guid> _whitelistedTenants = new List<Guid>
-        {
-            Guid.Parse("11111111-1111-1111-1111-111111111111"), // Example tenant IDs
-            Guid.Parse("22222222-2222-2222-2222-222222222222")
-        };
-    
+        private readonly ITenantRepository _tenantRepository;
+        private readonly ILogger<TenantService> _logger;
 
-        public Response<bool> IsTenantWhitelistedAsync(Guid tenantId)
+        public TenantService(ITenantRepository tenantRepository, ILogger<TenantService> logger)
         {
-            bool isWhitelisted = _whitelistedTenants.Contains(tenantId);
-            return isWhitelisted
-                ? Response<bool>.CreateSuccessResponse(true)
-                : Response<bool>.CreateErrorResponse("Tenant ID is not whitelisted.");
+            _tenantRepository = tenantRepository;
+            _logger = logger;
+        }
+
+        public async Task<Response<bool>> IsTenantWhitelistedAsync(string tenantId)
+        {
+            try
+            {
+                bool isWhitelisted = await _tenantRepository.IsTenantWhitelistedAsync(tenantId);
+                return isWhitelisted
+                    ? Response<bool>.CreateSuccessResponse(true)
+                    : Response<bool>.CreateErrorResponse("Tenant not whitelisted.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while retrieving the financial document for TenantId: {TenantId}", tenantId);
+                return Response<bool>.CreateErrorResponse("An error occurred while retrieving the financial document.");
+            }
+
         }
     }
 }

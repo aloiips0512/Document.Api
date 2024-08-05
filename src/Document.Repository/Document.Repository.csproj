@@ -12,5 +12,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Document.Models\Document.Models.csproj" />
+    <ProjectReference Include="..\Document.Repository.Interfaces\Document.Repository.Interfaces.csproj" />
   </ItemGroup>
 </Project>

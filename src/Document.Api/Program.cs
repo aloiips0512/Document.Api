@@ -1,6 +1,7 @@
 using AutoMapper;
 using Document.Models.Settings;
 using Document.Repository;
+using Document.Repository.Interfaces;
 using Document.Services;
 using Document.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,8 +13,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Configure Serilog
 Log.Logger = new LoggerConfiguration()
-    .CreateLogger();
-//builder.Host.UseSerilog();
+            .Enrich.FromLogContext()
+            .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)
+            .CreateLogger();
+builder.Host.UseSerilog();
 
 builder.Services.Configure<MongoDbSettings>(
     builder.Configuration.GetSection(nameof(MongoDbSettings)));
@@ -31,11 +34,16 @@ builder.Services.AddScoped(sp =>
     return client.GetDatabase(settings.DatabaseName);
 });
 
-
-builder.Services.AddSingleton<AppDbContext>();
+builder.Services.AddScoped<IClientRepository, ClientRepository>();
+builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<ITenantRepository, TenantRepository>();
+builder.Services.AddScoped<IDocumentRepository, DocumentRepository>();
+/////////////////////////////////////////////////////////////////////
 builder.Services.AddTransient<IClientService, ClientService>();
 builder.Services.AddTransient<IFinancialDocumentService, FinancialDocumentService>();
 builder.Services.AddTransient<IProductService, ProductService>();
+builder.Services.AddTransient<ICompanyService, CompanyService>();
 builder.Services.AddTransient<ITenantService, TenantService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // Add services to the container.
@@ -64,4 +72,5 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.UseSerilogRequestLogging();
 app.Run();
