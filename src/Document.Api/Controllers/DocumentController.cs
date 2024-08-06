@@ -35,24 +35,27 @@ namespace Document.Api.Controllers
         {
             // Step 1: Validate Product Code
             var productResponse = await _productService.IsProductSupported(request.ProductCode);
-            if (!productResponse.Success) return StatusCode(403, productResponse.ErrorMessage);
+            if (!productResponse.Success) return StatusCode(500, productResponse.ErrorMessage);
+            if (productResponse.Success && !productResponse.Data) return StatusCode(403, productResponse.WarningMessage);
 
             // Step 2: Tenant ID Whitelisting
             var tenantResponse = await _tenantService.IsTenantWhitelistedAsync(request.TenantId);
-            if (!tenantResponse.Success) return StatusCode(403, tenantResponse.ErrorMessage);
+            if (!tenantResponse.Success) return StatusCode(500, tenantResponse.ErrorMessage);
+            if (tenantResponse.Success && !tenantResponse.Data) return StatusCode(403, tenantResponse.WarningMessage);
 
             // Step 3: Client ID Whitelisting
             var clientResponse = await _clientService.GetClientByTenantAndDocumentIdAsync(request.TenantId, request.DocumentId);
-            if (!clientResponse.Success) return StatusCode(403, clientResponse.ErrorMessage);
-
+            //if (clientResponse.Success && clientResponse.Data != null) return StatusCode(403, clientResponse.ErrorMessage);
+            if (!clientResponse.Success) return StatusCode(500, clientResponse.ErrorMessage);
             var client = clientResponse.Data;
 
             var clientWhitelistResponse = await _clientService.IsClientWhitelistedAsync(request.TenantId, client.ClientId);
-            if (!clientWhitelistResponse.Success) return StatusCode(403, clientWhitelistResponse.ErrorMessage);
+            if (!clientWhitelistResponse.Success) return StatusCode(500, clientWhitelistResponse.ErrorMessage);
+            if (clientWhitelistResponse.Success && !clientWhitelistResponse.Data) return StatusCode(403, clientWhitelistResponse.WarningMessage);
 
             // Step 4: Fetch Additional Client Information
-            var companyResponse = await _companyService.GetCompanyByRegistrationNumberAsync(client.ClientVAT);
-            if (!companyResponse.Success) return StatusCode(403, companyResponse.ErrorMessage);
+            var companyResponse = await _companyService.GetCompanyByClientVATAsync(client.ClientVAT);
+            if (!companyResponse.Success) return StatusCode(500, companyResponse.ErrorMessage);
 
             var company = companyResponse.Data;
 
@@ -61,7 +64,8 @@ namespace Document.Api.Controllers
 
             // Step 6: Retrieve Financial Document for Client
             var documentResponse = await _financialDocumentService.GetFinancialDocumentAsync(request.TenantId, request.DocumentId, request.ProductCode);
-            if (!documentResponse.Success) return StatusCode(403, documentResponse.ErrorMessage);
+            if (!documentResponse.Success) return StatusCode(500, documentResponse.ErrorMessage);
+            if (documentResponse.Success && documentResponse.Data == null) return StatusCode(403, documentResponse.WarningMessage);
 
             var document = documentResponse.Data;
 

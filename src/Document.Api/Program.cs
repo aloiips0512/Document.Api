@@ -40,11 +40,11 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ITenantRepository, TenantRepository>();
 builder.Services.AddScoped<IDocumentRepository, DocumentRepository>();
 /////////////////////////////////////////////////////////////////////
-builder.Services.AddTransient<IClientService, ClientService>();
-builder.Services.AddTransient<IFinancialDocumentService, FinancialDocumentService>();
-builder.Services.AddTransient<IProductService, ProductService>();
-builder.Services.AddTransient<ICompanyService, CompanyService>();
-builder.Services.AddTransient<ITenantService, TenantService>();
+builder.Services.AddScoped<IClientService, ClientService>();
+builder.Services.AddScoped<IFinancialDocumentService, FinancialDocumentService>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ICompanyService, CompanyService>();
+builder.Services.AddScoped<ITenantService, TenantService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // Add services to the container.
 builder.Services.AddAutoMapper(typeof(Program));

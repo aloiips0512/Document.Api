@@ -67,7 +67,7 @@ namespace Document.Services
             {
                 var anonymizedDocument = new FinancialData
                 {
-                    AccountNumber = document.FinancialData.AccountNumber, // Placeholder, will handle anonymization later
+                    AccountNumber = document.FinancialData.AccountNumber, 
                     Balance = document.FinancialData.Balance,
                     Currency = document.FinancialData.Currency,
                     Transactions = document.FinancialData.Transactions.Select(t => new Transaction

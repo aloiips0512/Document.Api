@@ -6,7 +6,9 @@ namespace Document.Models
 {
     public class Tenant
     {
-        public Guid Id { get; set; }
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public ObjectId Id { get; set; }
         public string TenantId { get; set; }
         public string Name { get; set; }
         public bool Whitelisted { get; set; }

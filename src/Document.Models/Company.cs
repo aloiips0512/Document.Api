@@ -6,9 +6,12 @@ namespace Document.Models
 {
 	public class Company
 	{
-        public Guid Id { get; set; }
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
         public string RegistrationNumber { get; set; }
         public string CompanyType { get; set; }
+        public string ClientId { get; set; }
     }
 }
 
