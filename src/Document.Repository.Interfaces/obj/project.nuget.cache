@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "pPtKHREFTyN7g8Q6RTqH9B6K0Ivih1eD9W0BagI4zDCcD50FMWgWGhk8dr2T3i03FFsxXB0BG9zAT0rLV1qLZw==",
+  "success": true,
+  "projectFilePath": "/Users/aloiips/Projects/Document.Api/src/Document.Repository.Interfaces/Document.Repository.Interfaces.csproj",
+  "expectedPackageFiles": [
+    "/Users/aloiips/.nuget/packages/mongodb.bson/2.28.0/mongodb.bson.2.28.0.nupkg.sha512",
+    "/Users/aloiips/.nuget/packages/system.memory/4.5.5/system.memory.4.5.5.nupkg.sha512",
+    "/Users/aloiips/.nuget/packages/system.runtime.compilerservices.unsafe/5.0.0/system.runtime.compilerservices.unsafe.5.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
