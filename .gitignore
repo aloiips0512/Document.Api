@@ -1,4 +1,7 @@
 ﻿# .gitignore for .NET projects
+# Ignore binary files
+*.dll
+*.pdb
 
 # Build results
 [Dd]ebug/
