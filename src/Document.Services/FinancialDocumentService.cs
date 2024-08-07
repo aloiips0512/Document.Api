@@ -14,6 +14,8 @@ using Document.Repository.Interfaces;
 using System.Security.Cryptography;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
+using System.Reflection;
+using MongoDB.Bson;
 
 namespace Document.Services
 {
@@ -42,13 +44,13 @@ namespace Document.Services
                 var document = await _documentRepository.GetDocumentByTenantAndDocumentIdAsync(tenantId, documentId);
                 if (document == null)
                 {
-                    return Response<string>.CreateErrorResponse("Document not found.");
+                    return Response<string>.CreateWarningResponse("Document not found.");
                 }
 
                 var product = await _productRepository.GetProductByCodeAsync(productCode);
                 if (product == null)
                 {
-                    return Response<string>.CreateErrorResponse("Product not found.");
+                    return Response<string>.CreateWarningResponse("Product not found.");
                 }
 
                 var anonymizedDocument = AnonymizeFinancialData(document, product);
@@ -67,7 +69,7 @@ namespace Document.Services
             {
                 var anonymizedDocument = new FinancialData
                 {
-                    AccountNumber = document.FinancialData.AccountNumber, 
+                    AccountNumber = document.FinancialData.AccountNumber,
                     Balance = document.FinancialData.Balance,
                     Currency = document.FinancialData.Currency,
                     Transactions = document.FinancialData.Transactions.Select(t => new Transaction
@@ -82,27 +84,53 @@ namespace Document.Services
 
                 var productConfig = _configuration.GetSection($"Products:{product.ProductCode}");
 
-                foreach (var property in typeof(FinancialDocument).GetProperties())
+                foreach (var property in typeof(FinancialData).GetProperties())
                 {
                     var propertyName = property.Name.ToLower();
                     var fieldType = productConfig[$"Fields:{propertyName}"] ?? "mask";
 
-                    switch (fieldType)
+                    switch (fieldType.ToLower())
                     {
                         case "hash":
-                            anonymizedDocument.GetType().GetProperty(property.Name).SetValue(anonymizedDocument, Hash(document.GetType().GetProperty(property.Name).GetValue(document).ToString()));
+                            if (property.PropertyType == typeof(string))
+                            {
+                                string originalValue = (string)property.GetValue(document.FinancialData);
+                                string hashedValue = Hash(originalValue);
+                                property.SetValue(anonymizedDocument, hashedValue);
+                            }
+                            else
+                            {
+                                // Log or handle the type mismatch for non-string properties
+                                _logger.LogWarning("Property '{PropertyName}' on document type '{DocumentType}' is not of type 'string' for hashing", property.Name, anonymizedDocument.GetType().Name);
+                            }
                             break;
+
                         case "unchanged":
-                            anonymizedDocument.GetType().GetProperty(property.Name).SetValue(anonymizedDocument, document.GetType().GetProperty(property.Name).GetValue(document));
+                            property.SetValue(anonymizedDocument, property.GetValue(document.FinancialData));
                             break;
+
+                        case "mask":
                         default:
-                            anonymizedDocument.GetType().GetProperty(property.Name).SetValue(anonymizedDocument, "#####");
+                            switch (Type.GetTypeCode(property.PropertyType))
+                            {
+                                case TypeCode.String:
+                                    property.SetValue(anonymizedDocument, "#####");
+                                    break;
+                                case TypeCode.Object when property.PropertyType == typeof(ObjectId):
+                                    property.SetValue(anonymizedDocument, ObjectId.GenerateNewId().ToString());
+                                    break;
+                                case TypeCode.Object when property.PropertyType == typeof(Guid):
+                                    property.SetValue(anonymizedDocument, Guid.NewGuid().ToString());
+                                    break;
+                                default:
+                                    property.SetValue(anonymizedDocument, property.GetValue(document.FinancialData));
+                                    break;
+                            }
                             break;
                     }
                 }
 
                 return Newtonsoft.Json.JsonConvert.SerializeObject(anonymizedDocument);
-
             }
             catch (Exception ex)
             {
@@ -113,18 +141,14 @@ namespace Document.Services
 
         private string Hash(string input)
         {
-            using (var sha256 = SHA256.Create())
+            byte[] bytes = SHA256.HashData(Encoding.UTF8.GetBytes(input));
+            var builder = new StringBuilder();
+            foreach (var b in bytes)
             {
-                var bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(input));
-                var builder = new StringBuilder();
-                foreach (var b in bytes)
-                {
-                    builder.Append(b.ToString("x2"));
-                }
-                return builder.ToString();
+                builder.Append(b.ToString("x2"));
             }
+            return builder.ToString();
         }
-
     }
 }
 

@@ -10,7 +10,15 @@ using MongoDB.Driver;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
-
+// Add CORS policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins",
+        builder => builder
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+});
 // Configure Serilog
 Log.Logger = new LoggerConfiguration()
             .Enrich.FromLogContext()
@@ -67,6 +75,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("AllowAllOrigins");
 
 app.UseAuthorization();
 

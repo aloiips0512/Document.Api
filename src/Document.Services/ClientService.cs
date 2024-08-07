@@ -28,7 +28,7 @@ namespace Document.Services
                 var client = await _clientRepository.GetClientByTenantAndDocumentIdAsync(tenantId, documentId);
                 return client != null
                     ? Response<Client>.CreateSuccessResponse(client)
-                    : Response<Client>.CreateWarningResponse("Client not found.");
+                    : Response<Client>.CreateWarningResponse("Client for current tenant and document not found.");
             }
             catch (Exception ex)
             {

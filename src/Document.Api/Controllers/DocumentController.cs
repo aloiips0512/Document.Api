@@ -45,7 +45,7 @@ namespace Document.Api.Controllers
 
             // Step 3: Client ID Whitelisting
             var clientResponse = await _clientService.GetClientByTenantAndDocumentIdAsync(request.TenantId, request.DocumentId);
-            //if (clientResponse.Success && clientResponse.Data != null) return StatusCode(403, clientResponse.ErrorMessage);
+            if (clientResponse.Success && clientResponse.Data == null) return StatusCode(403, clientResponse.WarningMessage);
             if (!clientResponse.Success) return StatusCode(500, clientResponse.ErrorMessage);
             var client = clientResponse.Data;
 
@@ -56,6 +56,8 @@ namespace Document.Api.Controllers
             // Step 4: Fetch Additional Client Information
             var companyResponse = await _companyService.GetCompanyByClientVATAsync(client.ClientVAT);
             if (!companyResponse.Success) return StatusCode(500, companyResponse.ErrorMessage);
+            if (companyResponse.Success && companyResponse.Data == null) return StatusCode(403, clientResponse.WarningMessage);
+
 
             var company = companyResponse.Data;
 

@@ -26,7 +26,7 @@ namespace Document.Services
                 bool isWhitelisted = await _tenantRepository.IsTenantWhitelistedAsync(tenantId);
                 return isWhitelisted
                     ? Response<bool>.CreateSuccessResponse(true)
-                    : Response<bool>.CreateErrorResponse("Tenant not whitelisted.");
+                    : Response<bool>.CreateWarningResponse("Tenant not whitelisted.");
             }
             catch (Exception ex)
             {

@@ -18,11 +18,6 @@ namespace Document.Repository.Interfaces
             var tenant = await _tenants.Find(t => t.TenantId == tenantId).FirstOrDefaultAsync();
             return tenant != null && tenant.Whitelisted;
         }
-
-        public async Task CreateTenantAsync(Tenant tenant)
-        {
-            await _tenants.InsertOneAsync(tenant);
-        }
     }
 }
 

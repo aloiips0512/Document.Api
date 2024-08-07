@@ -24,7 +24,7 @@ namespace Document.Services
                 var company = await _companyRepository.GetCompanyByClientVATAsync(clientVAT);
                 return company != null
                     ? Response<Company>.CreateSuccessResponse(company)
-                    : Response<Company>.CreateWarningResponse("Company not found.");
+                    : Response<Company>.CreateWarningResponse("Company for current client VAT not found.");
             }
             catch (Exception ex)
             {
